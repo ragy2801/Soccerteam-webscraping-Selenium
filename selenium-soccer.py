@@ -84,7 +84,7 @@ if __name__ == '__main__':
         totalGamesByYear[year] = len(table_rows)
 
         # write to file
-        with open("2022_Sport.txt", 'a') as newFile:
+        with open("2022_Sport.txt", 'w') as newFile:
             for j, row in enumerate(table_rows):
                 newFile.write(f"Row {j} is: {row} \n")
 
