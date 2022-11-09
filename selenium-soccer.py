@@ -50,12 +50,15 @@ if __name__ == '__main__':
     driver = webdriver.Chrome()
     driver.get("https://fgcuathletics.com/sports/womens-soccer/stats/2022")
     assert "Page not found" not in driver.page_source
-
+    totalGamesByYear = {}
+    year = 2022
+    totalGames = []
     # To get the first five - a simple loop. You could add that threading here
-    for i in range(1, 5):
+    for i in range(1, 4):
         # Get select option by index to make less weak
         selects = Select(driver.find_element(By.XPATH, "//select"))
         selects.select_by_index(i)
+        year = driver.find_element(By.XPATH, f'//*[@id="ctl00_cplhMainContent_seasons_ddl"]/option[{i + 1}]').text
 
         # click on tabs
         by_game_button()
@@ -77,6 +80,13 @@ if __name__ == '__main__':
                 else:
                     table_rows.append(cur_row)
 
-        for j, row in enumerate(table_rows):
-            print(f"Row {j} is: {row}")
+        #make dictionary to store total amount of games each year
+        totalGamesByYear[year] = len(table_rows)
+
+        # write to file
+        with open("2022_Sport.txt", 'a') as newFile:
+            for j, row in enumerate(table_rows):
+                newFile.write(f"Row {j} is: {row} \n")
+
+    print("best year:", max(totalGamesByYear))
     driver.close()
